@@ -14,20 +14,34 @@ import videoThumb1 from "@/assets/video-thumb-1.jpg";
 import videoThumb2 from "@/assets/video-thumb-2.jpg";
 import bookingHero from "@/assets/booking-hero.jpg";
 
+type GalleryImage = {
+  url: string;
+};
+
+type GalleryPage = {
+  heroHeading?: string;
+  images?: GalleryImage[];
+};
+
 const fallbackImages = [
   heroBg, aboutPortrait, gallery1, gallery2, gallery3, gallery4, videoThumb1, videoThumb2, bookingHero,
 ];
 
 const Gallery = () => {
   const [selected, setSelected] = useState<number | null>(null);
-  const [galleryPage, setGalleryPage] = useState<any | null>(null);
+  const [galleryPage, setGalleryPage] = useState<GalleryPage | null>(null);
 
   useEffect(() => {
-    client.fetch(galleryPageQuery).then(setGalleryPage).catch(console.error);
+    client.fetch<GalleryPage>(galleryPageQuery)
+      .then(setGalleryPage)
+      .catch(console.error);
   }, []);
 
   const heroHeading = galleryPage?.heroHeading ?? "Gallery";
-  const images: string[] = (galleryPage?.images ?? []).map((img: any) => img?.url).filter(Boolean);
+  const images: string[] =
+    (galleryPage?.images ?? [])
+      .map((img) => img.url)
+      .filter(Boolean);
   const resolvedImages = images.length ? images : fallbackImages;
 
   return (
@@ -71,8 +85,11 @@ const Gallery = () => {
             className="fixed inset-0 z-[100] bg-background/95 flex items-center justify-center p-4"
             onClick={() => setSelected(null)}
           >
-            <button className="absolute top-6 right-6 text-foreground hover:text-primary transition-colors" onClick={() => setSelected(null)}>
-              <X size={32} />
+            <button 
+              aria-label="Close gallery" 
+              className="absolute top-6 right-6 text-foreground hover:text-primary transition-colors" 
+              onClick={() => setSelected(null)}>
+                <X size={32} />
             </button>
             <motion.img
               initial={{ scale: 0.9, opacity: 0 }}
