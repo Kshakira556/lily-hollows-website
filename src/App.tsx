@@ -15,6 +15,7 @@ import Gallery from "./pages/Gallery";
 import FanClub from "./pages/FanClub";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import EditRedirect from "./pages/EditRedirect";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,9 @@ const App = () => (
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/fan-club" element={<FanClub />} />
           <Route path="/contact" element={<Contact />} />
+          
+          <Route path="/edit" element={<EditRedirect />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
